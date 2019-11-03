@@ -1,0 +1,19 @@
+### Comand C mananger
+
+## Current copy
+
+Accessing each item in a list (or another iterable)Also getting the index of each item accessed
+
+## END CURRENT
+
+-- latest copies --
+
+i copy it
+
+-- latest copies --
+
+i copy it
+
+-- latest copies --
+
+i copy it

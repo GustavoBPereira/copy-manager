@@ -1,0 +1,10 @@
+#leitura
+
+varrendo linha por linha sem pular linha
+    for line in text:
+        print(line.rstrip())
+
+boa maneira de verificar um conteudo
+    if 'something' in line
+
+#escrever
