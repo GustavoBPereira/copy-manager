@@ -1,39 +1,46 @@
-import sys
+from pyperclip import paste
 
-# text = sys.argv[1:]
-# text = ' '.join(text)
-# stringify
+my_file = 'copy_manager.txt'
 
-# arquivo = open('mensagem.txt', 'a')
-# arquivo.write(text)
-# arquivo.write('\n')
+def add_current(text):
+    with open(my_file, 'r') as file:
+        data = file.readlines()
 
-# arquivo.close()
+    lines_old_copy =  get_position_old_copy(data)
+    old_text = ''.join(data[lines_old_copy['start']: lines_old_copy['end']])
+    clear_old_copy( data, lines_old_copy )
 
+    with open(my_file, 'w') as file:
+        data[lines_old_copy['start']] = '\n' + text + '\n\n'
+        file.writelines(data)
+    add_old(old_text)
+    return True
 
 def add_old(text):
-    print(text)
-    print()
-    print(type(text))
-    print()
-    print(dir(text))
+    with open(my_file, 'r') as file:
+        data = file.readlines()
+    for index, line in enumerate(data):
+        if line == '## END CURRENT\n':
+            data[index+1] = '\n-- latest copies --\n' + text + '\n'
+            break
+
+    with open(my_file, 'w') as file:
+        file.writelines(data)
     return True
 
 
-def add_current(text):
-    with open('put_entry.txt', 'r') as file:
-        data = file.readlines()
-
-    for index ,line in enumerate(data):
+def get_position_old_copy(data):
+    for index, line in enumerate(data):
         if line == '## Current copy\n':
             for search_index ,search_end in enumerate(data[index:]):
                 if search_end == '## END CURRENT\n':
-                    old_copy = data[index+1: search_index+1]
-                    data[index+1: search_index+1] = []
-                    add_old(old_copy)
+                    return {'start': index+1, 'end': search_index+1}
                     break
-            data[index+1] = '\n' + text + '\n\n'
 
-    with open('put_entry.txt', 'w') as file:
-        file.writelines(data)
+def clear_old_copy(data, position):
+    data[position['start']:position['end']] = []
     return True
+
+if __name__ == "__main__":
+    text = paste()
+    add_current(text)
